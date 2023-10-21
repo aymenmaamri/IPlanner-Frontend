@@ -1,0 +1,13 @@
+.planning-board-main-container {
+  background-color: coral;
+  height: 80%;
+  width: 80%;
+}
+
+.registration-form-input-field {
+  width: 400px;
+}
+
+.registration-form {
+  background-color: red;
+}

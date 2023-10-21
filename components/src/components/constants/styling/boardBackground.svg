@@ -1,0 +1,27 @@
+<svg
+    width={"80%"}
+    height={"80%"}
+    preserveAspectRatio="xMidYMin"
+    viewBox="0 0 50 10"
+    xmlns="http://www.w3.org/2000/svg"
+    style={{ backgroundColor: "grey" }}
+  >
+    <path
+      id="MyPath"
+      fill="transparent"
+      stroke="none"
+      d="M 0 5 Q 15 -5 30 5"
+      pathLength="2"
+    />
+    <text
+      font-size="3"
+      dominant-baseline="hanging"
+      text-anchor="middle"
+      fontFamily="Luckiest Guy"
+      fill="#FF9800"
+    >
+      <textPath href="#MyPath" startOffset="1">
+        Enjoy your Planning!
+      </textPath>
+    </text>
+  </svg>
