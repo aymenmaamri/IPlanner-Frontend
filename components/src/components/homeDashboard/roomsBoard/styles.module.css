@@ -1,0 +1,7 @@
+.rooms_main_board {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: 40px;
+}

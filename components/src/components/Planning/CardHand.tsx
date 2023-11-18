@@ -3,7 +3,7 @@ import { ReactElement, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { Card } from "../../modules/Card";
 import { initializeHand } from "../cardUtils/utils";
-import { selectedCardState } from "../state/selectedCardState";
+import { selectedCardState } from "../../state/selectedCardState";
 import { PlanningCard } from "./PlanningCard";
 import { keyframes } from "@emotion/react";
 

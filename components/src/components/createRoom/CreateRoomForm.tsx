@@ -1,4 +1,5 @@
 import { Label } from "@mui/icons-material";
+
 import {
   Alert,
   AlertColor,
@@ -8,73 +9,80 @@ import {
   Snackbar,
   TextField,
   InputBase,
+  Typography,
 } from "@mui/material";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { loginState } from "../state/loginState";
-import { roomsState } from "../state/roomsState";
+import { createPlanningRoom } from "../../services/planningRoomsService";
+import { loginState } from "../../state/loginState";
+import { roomsState } from "../../state/roomsState";
+import styles from "./styles.module.css";
+import { mainTextColor } from "../../utils/colors";
 
 export const CreateRoomForm = () => {
   const setRoomsState = useSetRecoilState(roomsState);
-  const userId = useRecoilValue(loginState)?.id;
   const [roomName, setName] = useState<string>("");
+  const [numberOfPlanners, setNumberOfPlanners] = useState<number>();
   const [toastData, setToastData] = useState<{
     show: boolean;
     message: string;
     type: string;
   } | null>(null);
 
+  // TODO: handle input validation
   const handleCreate = async () => {
-    if (roomName.length == 0) return;
-    const roomId = await axios
-      .post(
-        `http://localhost:8080/planning-room?roomName=${roomName}&userId=${userId}`,
-        null
-      )
-      .then((res) => {
-        setToastData({
-          show: true,
-          message: "Room created successfully",
-          type: "success",
-        });
-        setRoomsState((previousState) => [...previousState, res.data]);
-      })
-      .catch((error) => {
-        setToastData({
-          show: true,
-          message: "Room already exist",
-          type: "error",
-        });
+    try {
+      const room = await createPlanningRoom(roomName, numberOfPlanners || 0);
+      setToastData({
+        show: true,
+        message: "Room created successfully",
+        type: "success",
       });
+      console.log(room);
+      setRoomsState((previousState) => [...previousState, room]);
+    } catch (error) {
+      setToastData({
+        show: true,
+        message: "Error while creating the room",
+        type: "error",
+      });
+    }
   };
 
   return (
     <>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          width: 225,
-          height: 160,
-          borderRadius: "5%",
-          backgroundColor: "#eddcb7",
-          margin: "20px 0",
-          gap: "10px",
-          boxShadow:
-            "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
-        }}
-      >
+      <div className={styles.create_room_main_form}>
+        <Typography variant="h6" color={mainTextColor}>
+          Create New Planning Room
+        </Typography>
+
         <TextField
           value={roomName}
           id="create-room-input-field"
           label="Enter room name"
-          variant="outlined"
+          variant="filled"
           onChange={(e) => setName(e.target.value)}
         />
-        <Button variant="outlined" onClick={handleCreate}>
+        <TextField
+          value={numberOfPlanners}
+          inputProps={{ type: "number" }}
+          label="Number of planners"
+          variant="filled"
+          onChange={(e) =>
+            setNumberOfPlanners(e.target.value as unknown as number)
+          }
+        />
+
+        <Button
+          variant="outlined"
+          onClick={handleCreate}
+          sx={{
+            textTransform: "none",
+            color: mainTextColor,
+            borderColor: mainTextColor,
+          }}
+        >
           Create Room
         </Button>
         <Snackbar
@@ -89,7 +97,7 @@ export const CreateRoomForm = () => {
             {toastData?.message}
           </Alert>
         </Snackbar>
-      </Box>
+      </div>
     </>
   );
 };

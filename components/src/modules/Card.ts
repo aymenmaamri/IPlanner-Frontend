@@ -1,5 +1,4 @@
 import { cardTypes } from "../components/constants/styling/constants";
-
 export class Card {
   public value: number;
   public color: string;

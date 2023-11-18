@@ -1,16 +1,20 @@
 import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
+import { useRecoilValue } from "recoil";
+import { loginState } from "../state/loginState";
 
-export const AppHeader = ({ username }: { username: string | undefined }) => {
+export const AppHeader = () => {
+  const login = useRecoilValue(loginState);
+
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#0f0830" }}>
+    <AppBar position="static" sx={{ backgroundColor: "#424242" }}>
       <Toolbar>
         <Typography
           variant="h6"
           component="div"
-          color={"#1976d2"}
+          color={"white"}
           sx={{ flexGrow: 1 }}
         >
-          User: {username}
+          User: {login ? login.username : "unknown user"}
         </Typography>
       </Toolbar>
     </AppBar>

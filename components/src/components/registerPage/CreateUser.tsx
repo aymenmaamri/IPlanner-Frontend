@@ -15,7 +15,9 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
-import { loginState, setUserInBrowserStorage } from "../state/loginState";
+import { loginState, setUserInBrowserStorage } from "../../state/loginState";
+import Fig1 from "../../../../public/Fig1.svg";
+import Fig2 from "../../../../public/Fig2.svg";
 
 export const CreateUser = () => {
   const router = useRouter();
@@ -25,7 +27,7 @@ export const CreateUser = () => {
   const [password, setPassword] = useState<string>("");
   const [passwordConfirmation, setConfirmationPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [passwordActive, setPasswordActive] = useState(false);
 
   const validationSchema = Yup.object().shape({
     username: Yup.string().required("username is required"),
@@ -76,7 +78,7 @@ export const CreateUser = () => {
   }) => {
     if (username.length == 0) return;
     const userId = await axios
-      .post(`http://localhost:8080/createUser`, {
+      .post("http://localhost:8080/auth/signup", {
         username,
         email,
         password,
@@ -107,6 +109,7 @@ export const CreateUser = () => {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
+        backgroundColor: "#F5F5DC",
       }}
     >
       <Box
@@ -116,13 +119,30 @@ export const CreateUser = () => {
           justifyContent: "center",
           alignItems: "center",
           width: 400,
-          height: 500,
+          height: 650,
           borderRadius: "5%",
           backgroundColor: "#eddcb7",
           boxShadow:
             "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
         }}
       >
+        <div
+          className="svg-container"
+          style={{
+            position: "relative",
+            width: "150px",
+            height: "150px",
+            borderRadius: "50%",
+            background: "none",
+            border: "solid 3px black",
+            overflow: "hidden",
+            pointerEvents: "none",
+          }}
+        >
+          {!passwordActive ? <Fig1 /> : <Fig2 />}
+        </div>
+
+        <hr />
         <form
           onSubmit={formik.handleSubmit}
           style={{
@@ -171,12 +191,13 @@ export const CreateUser = () => {
           </InputLabel>
           <TextField
             value={formik.values.password}
-            type={showPassword ? "text" : "password"}
+            type="password"
             id="password"
             label="password"
             variant="outlined"
+            onFocus={(e) => setPasswordActive(true)}
+            onBlur={(e) => setPasswordActive(false)}
             onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
             error={formik.touched.password && Boolean(formik.errors.password)}
             helperText={formik.touched.password && formik.errors.password}
           />

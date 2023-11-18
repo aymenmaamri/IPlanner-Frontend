@@ -7,7 +7,7 @@ import {
   cardTypeRepresentationMap,
   cardTypes,
 } from "../constants/styling/constants";
-import { selectedCardState } from "../state/selectedCardState";
+import { selectedCardState } from "../../state/selectedCardState";
 import ClearIcon from "@mui/icons-material/Clear";
 
 const styles = (color: string, animate: boolean) => css`

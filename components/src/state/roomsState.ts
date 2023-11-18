@@ -1,11 +1,9 @@
 import { atom } from "recoil";
 
 type Room = {
-  roomOwnerUsername: string;
-  roomId: string;
+  joinedUsers: string[];
+  roomOwner: string;
   roomName: string;
-  roomOwnerId: string;
-  users: string[];
 };
 
 export const roomsState = atom<Room[]>({
